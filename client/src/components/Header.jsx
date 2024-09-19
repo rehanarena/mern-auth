@@ -23,7 +23,7 @@ export default function Header() {
             <img src= {currentUser.profilePicture} alt="profile" className="h-7 w-7 rounded-full object-cover"/>
           ):(
 
-            <li className="text-white">Sign In</li>
+            <li>Sign In</li>
           )}
           </Link>
         </ul>
