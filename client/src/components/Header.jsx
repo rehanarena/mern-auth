@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
-  console.log("Current User:", currentUser);
+  // console.log("Current User:", currentUser);
 
   return (
     <div className="bg-slate-200">
