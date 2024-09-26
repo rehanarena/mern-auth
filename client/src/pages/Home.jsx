@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Header from "../components/Header";
 
 export default function Home() {
   const [username, setUsername] = useState(null);
@@ -11,6 +12,8 @@ export default function Home() {
   }, []);
 
   return (
+    <>
+    <Header/>
     <div className="p-5 max-w-lg mx-auto text-center">
       <h1 className="text-4xl font-bold my-6">Welcome to My App</h1>
 
@@ -30,5 +33,6 @@ export default function Home() {
         Explore the app to see how it works, and use this template to kickstart your own full-stack projects!
       </p>
     </div>
+    </>
   );
 }

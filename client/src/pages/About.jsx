@@ -1,7 +1,9 @@
-import React from 'react';
+import Header from '../components/Header';
 
 export default function About() {
   return (
+    <>
+    <Header/>
     <div className='px-4 py-12 max-w-2xl mx-auto'>
       <h1 className='text-3xl font-bold mb-4 text-slate-800'>About</h1>
       
@@ -17,5 +19,6 @@ export default function About() {
         Use this app as a template to build your own full-stack projects with authentication. Feel free to customize and expand as needed!
       </p>
     </div>
+    </>
   );
 }

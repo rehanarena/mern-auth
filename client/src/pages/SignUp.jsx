@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from "../components/Header";
 import OAuth from '../components/OAuth';
 
 export default function SignUp() {
@@ -37,6 +38,8 @@ export default function SignUp() {
     }
   };
   return (
+    <>
+    <Header/>
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
@@ -77,5 +80,6 @@ export default function SignUp() {
       </div>
       <p className='text-red-700 mt-5'>{error && 'Something went wrong!'}</p>
     </div>
+    </>
   );
 }

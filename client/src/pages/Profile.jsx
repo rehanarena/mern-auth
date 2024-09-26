@@ -16,6 +16,7 @@ import {
   signOut,
 } from "../redux/user/userSlice";
 import { app } from "../firebase";
+import Header from "../components/Header";
 // import { getAuth } from "firebase/auth";
 
 export default function Profile() {
@@ -119,6 +120,8 @@ export default function Profile() {
   }
 
   return (
+    <>
+    <Header/>
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center m-7">Profile</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -189,5 +192,6 @@ export default function Profile() {
         {updateSuccess && "User is updated successfully!"}
       </p>
     </div>
+    </>
   );
 }
