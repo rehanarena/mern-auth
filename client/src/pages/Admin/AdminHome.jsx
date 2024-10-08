@@ -6,12 +6,14 @@ import Swal from 'sweetalert2';
 
 function AdminHome() {
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [users, setUsers] = useState([]);
   const [data, setData] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5);
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     axios
       .get("/api/admin/home")
       .then((res) => {
@@ -21,6 +23,18 @@ function AdminHome() {
         console.log(err);
       });
   }, [data]);
+
+  // Debounce implementation(to avoid frequent filtering while typing)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search); // Update debounced (search after a delay)
+      setCurrentPage(1);
+    }, 500); 
+
+    return () => {
+      clearTimeout(handler); // Clear timeout (if search changes within the delay)
+    };
+  }, [search]); // Run the effect only when search changes
 
   const handleEdit = (id) => {
     navigate(`/admin/edit/${id}`);
@@ -53,9 +67,20 @@ function AdminHome() {
     });
   };
 
+  // Use the debounced search term for filtering users
   const filteredUsers = users.filter((val) =>
-    val.username.toLowerCase().startsWith(search.toLowerCase())
+    val.username.toLowerCase().startsWith(debouncedSearch.toLowerCase())
   );
+
+  // Get current users for the page
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
     <>
@@ -93,9 +118,9 @@ function AdminHome() {
                 </tr>
               </thead>
               <tbody className="text-gray-700 text-sm font-light">
-                {(search === "" ? users : filteredUsers).map((user, index) => (
+                {currentUsers.map((user, index) => (
                   <tr key={user._id} className="border-b border-gray-200 hover:bg-gray-100 transition duration-150">
-                    <td className="py-3 px-6">{index + 1}</td>
+                    <td className="py-3 px-6">{indexOfFirstUser + index + 1}</td>
                     <td className="py-3 px-6">
                       <img className="h-10 w-10 rounded-full border-2 border-gray-300" src={user.profilePicture} alt={user.username} />
                     </td>
@@ -119,6 +144,23 @@ function AdminHome() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-center mt-6">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+              <button
+                key={pageNumber}
+                onClick={() => paginate(pageNumber)}
+                className={`mx-1 px-3 py-2 rounded-lg ${
+                  pageNumber === currentPage
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                }`}
+              >
+                {pageNumber}
+              </button>
+            ))}
           </div>
         </div>
       </div>
